@@ -17,7 +17,20 @@ namespace kiko {
 
 	void Actor::Draw(kiko::Renderer& renderer) {
 
-		m_model->Draw(renderer, GetTransform());
+		//m_model->Draw(renderer, GetTransform());
+		for (auto& component : m_components) {
+
+			if (dynamic_cast<RenderComponent*> (component.get()))
+				dynamic_cast<RenderComponent*> (component.get())->Draw(renderer);
+
+		}
+
+	}
+
+	void Actor::AddComponent(std::unique_ptr<Component> component) {
+
+		component->m_owner = this;
+		m_components.push_back(std::move(component));
 
 	}
 

@@ -11,4 +11,6 @@ namespace kiko {
     bool getFileSize(const std::filesystem::path& path, size_t& size);
     bool readFile(const std::filesystem::path& path, std::string& buffer);
 
+    std::string getFileName(const std::filesystem::path& path);
+
 }

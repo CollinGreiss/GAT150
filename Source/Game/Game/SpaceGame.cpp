@@ -6,6 +6,8 @@
 
 #include "Framework/Scene.h"
 #include "Framework/Emitter.h"
+#include "Framework/Resource/ResourceManager.h"
+#include "Framework/Components/SpriteComponent.h"
 
 #include "Renderer/Renderer.h"
 #include "Renderer/ModelManager.h"
@@ -19,20 +21,16 @@ using namespace kiko;
 
 bool SpaceGame::Initialize() {
 
-	m_font = std::make_shared<Font>("ARCADECLASSIC.ttf", 24);
-	m_largeFont = std::make_shared<Font>("ARCADECLASSIC.ttf", 60);
-
-	m_scoreText = std::make_unique<Text>(m_font);
+	m_scoreText = std::make_unique<Text>(g_resources.Get<Font>("fonts/ARCADECLASSIC.ttf", 24));
 	m_scoreText->Create(kiko::g_renderer, "", kiko::Color{ 1, 1, 1, 1 });
 
-	m_healthText = std::make_unique<Text>(m_font);
+	m_healthText = std::make_unique<Text>(g_resources.Get<Font>("fonts/ARCADECLASSIC.ttf", 24));
 	m_healthText->Create(kiko::g_renderer, "", kiko::Color{ 1, 1, 1, 1 });
 
-	m_titleText = std::make_unique<Text>(m_largeFont);
-	m_titleText->Create(kiko::g_renderer, "ASTEROID`", kiko::Color{ 1, 1, 1, 1 });
+	m_titleText = std::make_unique<Text>(g_resources.Get<Font>("fonts/ARCADECLASSIC.ttf", 600));
 
-	g_audioSystem.AddAudio("laser", "laser.wav");
-	g_audioSystem.AddAudio("boom", "boom.wav");
+	g_audioSystem.AddAudio("laser", "sounds/laser.wav");
+	g_audioSystem.AddAudio("boom", "sounds/explosion.wav");
 
 	m_scene = std::make_unique<Scene>();
 
@@ -67,15 +65,23 @@ void SpaceGame::Update(float dt) {
 
 	case SpaceGame::StartLevel:
 
-		m_scene->Add(std::make_unique<Player>(
+		auto player = std::make_unique<Player>(
 			100.0f,
 			150.0f,
 			DegToRad(270.0f),
 			Transform{ {50, (g_renderer.GetHeight() - 28)}, 0, 3 },
-			g_modelManager.Get("ship.txt"),
+			g_modelManager.Get("models/ship.txt"),
 			"Player",
 			0.0f
-			));
+			);
+
+		std::unique_ptr<SpriteComponent> component = std::make_unique<kiko::SpriteComponent>();
+		//component->m_texture = g_resources.Get<Texture>("images/Main Ship/Main Ship - Bases/Main Ship - Base - Full health.png");
+		component->m_texture = g_resources.Get<Texture>("images/gary.png");
+		player->AddComponent(std::move(component));
+
+
+		m_scene->Add(std::move(player));
 
 		m_state = eState::Game;
 
@@ -111,7 +117,7 @@ void SpaceGame::Update(float dt) {
 						0,
 						2
 					},
-					g_modelManager.Get("bird.txt"),
+					g_modelManager.Get("models/bird.txt"),
 					"Bird",
 					this
 					));
@@ -127,7 +133,7 @@ void SpaceGame::Update(float dt) {
 						0,
 						2
 					},
-					g_modelManager.Get("cactus.txt"),
+					g_modelManager.Get("models/cactus.txt"),
 					"Cactus",
 					this
 					));
@@ -142,7 +148,7 @@ void SpaceGame::Update(float dt) {
 						DegToRad(270),
 						2
 					},
-					g_modelManager.Get("enemy.txt"),
+					g_modelManager.Get("models/enemy.txt"),
 					5.0f,
 					"enemy"
 					));

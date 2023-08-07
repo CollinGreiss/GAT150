@@ -28,7 +28,7 @@ void Enemy::Update(float dt) {
         m_firetimer = m_firerate;
         std::unique_ptr<Projectile> projectile = std::make_unique<Projectile>(
             kiko::Transform{ m_transform.position, 0, 1 },
-            kiko::g_modelManager.Get("bomb.txt"),
+            kiko::g_modelManager.Get("models/bomb.txt"),
             40.0f
             );
         m_scene->Add(std::move(projectile));

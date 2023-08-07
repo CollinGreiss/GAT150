@@ -2,6 +2,7 @@
 
 #include "Core/Core.h"
 #include "Renderer/Model.h"
+#include "Components/SpriteComponent.h"
 #include <memory>
 
 namespace kiko {
@@ -26,6 +27,8 @@ namespace kiko {
 
 		virtual void Update(float dt);
 		virtual void Draw(kiko::Renderer& renderer);
+
+		void AddComponent(std::unique_ptr<Component> component);
 
 		virtual void OnCollision(Actor* other) {};
 
@@ -57,7 +60,9 @@ namespace kiko {
 
 		Transform m_transform;
 		std::string m_tag;
+
 		std::shared_ptr<Model> m_model;
+		std::vector<std::unique_ptr<Component>> m_components;
 
 	};
 

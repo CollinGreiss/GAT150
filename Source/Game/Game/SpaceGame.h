@@ -31,8 +31,6 @@ private:
 	float m_spawnTimer = 0.0f;
 	float m_spawnTime = 3.0f;
 
-	std::shared_ptr<kiko::Font> m_font;
-	std::shared_ptr<kiko::Font> m_largeFont;
 	std::shared_ptr<kiko::Text> m_scoreText;
 	std::shared_ptr<kiko::Text> m_healthText;
 	std::shared_ptr<kiko::Text> m_titleText;

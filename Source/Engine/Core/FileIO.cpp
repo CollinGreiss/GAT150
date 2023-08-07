@@ -31,6 +31,12 @@ namespace kiko {
 
     }
 
+    std::string getFileName(const std::filesystem::path& path) {
+
+        return path.filename().string();
+    
+    }
+
     bool readFile(const std::filesystem::path& path, std::string& buffer) {
 
         if (!fileExists(path)) return false;
