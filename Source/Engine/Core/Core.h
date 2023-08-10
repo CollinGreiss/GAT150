@@ -7,6 +7,7 @@
 #include "Logger.h"
 
 #include "Vector2.h"
+#include "Math/Vector3.h"
 #include "Transform.h"
 #include "MathUtils.h"
 #include "Color.h"

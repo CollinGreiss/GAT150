@@ -2,16 +2,9 @@
 
 #include "Player.h"
 #include "Enemy.h"
-#include "Obstacle.h"
 
-#include "Framework/Scene.h"
-#include "Framework/Emitter.h"
-#include "Framework/Resource/ResourceManager.h"
-#include "Framework/Components/SpriteComponent.h"
-
+#include "Framework/Framework.h"
 #include "Renderer/Renderer.h"
-#include "Renderer/ModelManager.h"
-#include "Renderer/ParticleSystem.h"
 
 #include "Audio/AudioSystem.h"
 #include "Input/InputSystem.h"
@@ -64,26 +57,28 @@ void SpaceGame::Update(float dt) {
 		break;
 
 	case SpaceGame::StartLevel:
+	{
 
-		auto player = std::make_unique<Player>(
-			100.0f,
-			150.0f,
-			DegToRad(270.0f),
-			Transform{ {50, (g_renderer.GetHeight() - 28)}, 0, 3 },
-			g_modelManager.Get("models/ship.txt"),
-			"Player",
-			0.0f
+		std::unique_ptr<Player> player = std::make_unique<Player>(
+			100.0f, //health
+			10.0f, //speed
+			DegToRad(270.0f), //turn rate
+			Transform{ {500, 300}, 0, 3 },
+			"Player" //tag
 			);
 
 		std::unique_ptr<SpriteComponent> component = std::make_unique<kiko::SpriteComponent>();
-		//component->m_texture = g_resources.Get<Texture>("images/Main Ship/Main Ship - Bases/Main Ship - Base - Full health.png");
-		component->m_texture = g_resources.Get<Texture>("images/gary.png");
+		component->m_texture = g_resources.Get<Texture>("images/Main Ship/Main Ship - Bases/Main Ship - Base - Full health.png", g_renderer);
 		player->AddComponent(std::move(component));
 
+		std::unique_ptr<EnginePhysicsComponent> physicsComponent = std::make_unique<kiko::EnginePhysicsComponent>();
+		physicsComponent->m_damping = .9;
+		player->AddComponent(std::move(physicsComponent));
 
 		m_scene->Add(std::move(player));
 
 		m_state = eState::Game;
+	}
 
 		break;
 
@@ -106,58 +101,8 @@ void SpaceGame::Update(float dt) {
 
 			m_spawnTimer = randomf(0, m_spawnTime / 2);
 
-			switch (random(0, 3)) {
+			//Spawn some bullshit
 
-			case 0:
-
-				m_scene->Add(std::make_unique <Obstacle>(
-					50.0f + m_score,
-					Transform{
-						{(float)g_renderer.GetWidth(), (float)g_renderer.GetHeight() - 124 },
-						0,
-						2
-					},
-					g_modelManager.Get("models/bird.txt"),
-					"Bird",
-					this
-					));
-
-				break;
-
-			case 1:
-
-				m_scene->Add(std::make_unique <Obstacle>(
-					50.0f + m_score,
-					Transform{
-						{(float)g_renderer.GetWidth(), (float)g_renderer.GetHeight() - 24 },
-						0,
-						2
-					},
-					g_modelManager.Get("models/cactus.txt"),
-					"Cactus",
-					this
-					));
-
-				break;
-			case 2:
-
-				m_scene->Add(std::make_unique <Enemy>(
-					50.0f + m_score,
-					Transform{
-						{(float)g_renderer.GetWidth(), 100.0f},
-						DegToRad(270),
-						2
-					},
-					g_modelManager.Get("models/enemy.txt"),
-					5.0f,
-					"enemy"
-					));
-
-				break;
-
-			default:
-				break;
-			}
 		}
 
 		break;

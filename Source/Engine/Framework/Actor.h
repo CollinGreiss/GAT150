@@ -12,13 +12,11 @@ namespace kiko {
 	public:
 
 		Actor() = default;
-		Actor(const kiko::Transform& transform, std::shared_ptr<Model>& model, std::string tag, float health, float damping, float lifespan = -1.0f) :
+		Actor(const kiko::Transform& transform, std::string tag, float health, float lifespan = -1.0f) :
 			m_transform{ transform },
-			m_model{ model },
 			m_tag{ tag },
 			m_lifespan{ lifespan },
-			m_health{ health },
-			m_damping{ damping }
+			m_health{ health }
 		{}
 
 		Actor(const kiko::Transform& transform) :
@@ -28,19 +26,19 @@ namespace kiko {
 		virtual void Update(float dt);
 		virtual void Draw(kiko::Renderer& renderer);
 
+		template<typename T>
+		T* GetComponent();
 		void AddComponent(std::unique_ptr<Component> component);
 
 		virtual void OnCollision(Actor* other) {};
 
-		float GetRadius() { return (m_model) ? m_model->GetRadius() * m_transform.scale : -10000; }
+		float GetRadius() { return 30; }
 		float GetHealth() { return m_health; }
+
 		std::string GetTag() { return m_tag; }
-		Transform GetTransform() { return m_transform; }
+		Transform& GetTransform() { return m_transform; }
 
 		void SetLifespan(float lifespan) { m_lifespan = lifespan; }
-
-		void AddForce(vec2 force) { m_velocity += force; }
-		void SetDamping(float damping) { m_damping = damping; }
 
 		virtual void Damage(float damage) { if (m_health != -1.0f) m_health -= damage; }
 
@@ -55,15 +53,25 @@ namespace kiko {
 		float m_lifespan = -1.0f;
 		float m_health = -1.0f;
 
-		vec2 m_velocity;
-		float m_damping = 0;
-
 		Transform m_transform;
 		std::string m_tag;
 
-		std::shared_ptr<Model> m_model;
 		std::vector<std::unique_ptr<Component>> m_components;
 
 	};
+
+	template<typename T>
+	inline T* Actor::GetComponent() {
+
+		for (auto& Component : m_components) {
+
+			T* result = dynamic_cast<T*> (Component.get());
+			if (result) return result;
+
+		}
+
+		return nullptr;
+
+	}
 
 }

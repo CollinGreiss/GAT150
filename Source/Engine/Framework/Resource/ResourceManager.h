@@ -17,7 +17,7 @@ namespace kiko {
 
     private:
         
-        std::map<std::string, std::shared_ptr<Resource>> m_resources;
+        std::map<std::string, res_t<Resource>> m_resources;
     
     };
 

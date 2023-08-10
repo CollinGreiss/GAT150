@@ -10,10 +10,6 @@ namespace kiko {
 
 		virtual void Draw(class Renderer& renderer) = 0;
 
-	protected:
-
-		class Actor* m_owner = nullptr;
-
 	};
 
 }

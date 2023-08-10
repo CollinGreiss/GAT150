@@ -2,7 +2,6 @@
 
 #include "Core/Core.h"
 
-#include "Renderer/Texture.h"
 #include "Framework/Resource/ResourceManager.h"
 
 #include "Renderer/Renderer.h"
@@ -12,6 +11,8 @@
 #include "SpaceGame.h"
 
 #include <thread>
+
+#include "Player.h"
 
 using namespace std;
 using namespace kiko;
@@ -33,11 +34,8 @@ int main(int argc, char* argv[]) {
     g_inputSystem.Initialize();
     g_audioSystem.Initialize();
 
-    res_t<Texture> texture = g_resources.Get<Texture>("images/gary.png", g_renderer);
-
     unique_ptr<SpaceGame> game = make_unique<SpaceGame>();
     game->Initialize();
-
 
     bool quit = false;
     while (!quit) {
@@ -58,7 +56,6 @@ int main(int argc, char* argv[]) {
         g_renderer.SetColor(0, 0, 0, 0);
         g_renderer.BeginFrame();
 
-        g_renderer.DrawTexture(texture.get(), 10.0f, 10.0f, 0.0f);
         game->Draw(g_renderer);
 
         g_renderer.EndFrame();

@@ -1,5 +1,7 @@
 #include "ParticleSystem.h"
 
+#include "Renderer.h"
+
 namespace kiko{
 
 	ParticleSystem g_particleSystem(10000);

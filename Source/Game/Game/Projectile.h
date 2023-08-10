@@ -6,8 +6,8 @@ class Projectile : public kiko::Actor {
 
 public:
 
-	Projectile(const kiko::Transform& transform, std::shared_ptr<kiko::Model> model, float damage) :
-		Actor{ transform, model, "Bomb", -1.0f, 0.0f},
+	Projectile(const kiko::Transform& transform, float damage, std::string tag, float lifespan = -1.0f) :
+		Actor{ transform, tag, -1.0f, lifespan},
 		m_damage{damage}
 	{ };
 
@@ -16,7 +16,7 @@ public:
 
 private:
 
-	float m_time;
 	float m_damage = 0;
+
 };
 
