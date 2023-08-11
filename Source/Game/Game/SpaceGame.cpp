@@ -63,7 +63,7 @@ void SpaceGame::Update(float dt) {
 			100.0f, //health
 			10.0f, //speed
 			DegToRad(270.0f), //turn rate
-			Transform{ {500, 300}, 0, 3 },
+			Transform{ {500, 300}, 0, 1 },
 			"Player" //tag
 			);
 

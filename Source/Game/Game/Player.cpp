@@ -33,7 +33,8 @@ void Player::Update(float dt) {
         std::unique_ptr<Projectile> projectile = std::make_unique<Projectile>(
             kiko::Transform{ m_transform.position, m_transform.rotation, 1 },
             40.0f,
-            m_tag
+            m_tag,
+            2.0f
             );
 
         std::unique_ptr<kiko::SpriteComponent> component = std::make_unique<kiko::SpriteComponent>();
@@ -42,7 +43,8 @@ void Player::Update(float dt) {
 
         std::unique_ptr<kiko::EnginePhysicsComponent> physicsComponent = std::make_unique<kiko::EnginePhysicsComponent>();
         physicsComponent->m_damping = 0;
-        physicsComponent->m_velocity = (forward * m_speed * m_speed);
+        physicsComponent->m_velocity = GetComponent<kiko::PhysicsComponent>()->m_velocity;
+        physicsComponent->m_acceleration = (forward * m_speed * m_speed * m_speed);
        
         projectile->AddComponent(std::move(physicsComponent));
 

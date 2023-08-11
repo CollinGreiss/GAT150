@@ -102,6 +102,17 @@ namespace kiko {
 
 		return { {c, -s, 0.0f}, {s, c, 0.0f}, {0, 0, 1} };
 	}
+	
+	inline vec2 Matrix33::GetTranslation() const { return { rows[0][2], rows[1][2] }; }
+	inline float Matrix33::GetRotation() const { return std::atan2(rows[1][0], rows[0][0]); }
+	inline vec2 Matrix33::GetScale() const { 
+		
+		vec2 x = { rows[0][0], rows[0][1] };
+		vec2 y = { rows[1][0], rows[1][1] };
+
+		return { x.Length(), y.Length() };
+	
+	}
 
 	using mat3 = Matrix33;
 

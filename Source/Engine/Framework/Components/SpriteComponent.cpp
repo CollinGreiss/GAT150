@@ -12,7 +12,7 @@ namespace kiko {
 
 	void SpriteComponent::Draw(Renderer& renderer) {
 
-		renderer.DrawTexture(m_texture.get(), m_owner->GetTransform().position.x, m_owner->GetTransform().position.y, RadToDeg(m_owner->GetTransform().rotation));
+		renderer.DrawTexture(m_texture.get(), m_owner->GetTransform());
 		
 	}
 
