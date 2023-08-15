@@ -2,7 +2,7 @@
 
 #include "Core/Core.h"
 
-#include "Framework/Resource/ResourceManager.h"
+#include "Framework/Framework.h"
 
 #include "Renderer/Renderer.h"
 #include "Audio/AudioSystem.h"
@@ -13,6 +13,8 @@
 #include <thread>
 
 #include "Player.h"
+
+#include "rapidjson/include/document.h"
 
 using namespace std;
 using namespace kiko;
@@ -33,6 +35,7 @@ int main(int argc, char* argv[]) {
 
     g_inputSystem.Initialize();
     g_audioSystem.Initialize();
+
 
     unique_ptr<SpaceGame> game = make_unique<SpaceGame>();
     game->Initialize();

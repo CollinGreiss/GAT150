@@ -11,22 +11,30 @@
 #include <memory>
 #include <iostream>
 
+bool Player::Initialize() {
+
+    Actor::Initialize();
+
+    m_physicsComponent = GetComponent<kiko::PhysicsComponent>();
+
+    return true;
+
+}
+
 void Player::Update(float dt) {
 
     Actor::Update(dt);
 
-    if (!GetComponent<kiko::PhysicsComponent>())
-        return;
-
     float rotate = 0;
     if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_A)) rotate = -1;
     if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_D)) rotate = 1;
-    m_transform.rotation += rotate * m_turnRate * kiko::g_time.GetDeltaTime();
+
+    m_transform.rotation += rotate * m_turnRate * dt;
 
     kiko::vec2 forward = kiko::vec2{ 0, -1 }.Rotate(m_transform.rotation);
 
 
-    if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_W)) GetComponent<kiko::PhysicsComponent>()->ApplyForce(forward * m_speed);
+    if (m_physicsComponent && kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_W)) m_physicsComponent->ApplyForce(forward * m_speed);
 
     if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE) && !kiko::g_inputSystem.GetPreviousKeyDown(SDL_SCANCODE_SPACE)) {
 
@@ -38,15 +46,20 @@ void Player::Update(float dt) {
             );
 
         std::unique_ptr<kiko::SpriteComponent> component = std::make_unique<kiko::SpriteComponent>();
-        component->m_texture = kiko::g_resources.Get<kiko::Texture>("images/rocket.png", kiko::g_renderer);
+        component->m_texture = GET_RESOURCE(kiko::Texture, "images/rocket.png", kiko::g_renderer);
         projectile->AddComponent(std::move(component));
 
         std::unique_ptr<kiko::EnginePhysicsComponent> physicsComponent = std::make_unique<kiko::EnginePhysicsComponent>();
         physicsComponent->m_damping = 0;
-        physicsComponent->m_velocity = GetComponent<kiko::PhysicsComponent>()->m_velocity;
+        if (m_physicsComponent) physicsComponent->m_velocity = m_physicsComponent->m_velocity;
         physicsComponent->m_acceleration = (forward * m_speed * m_speed * m_speed);
        
         projectile->AddComponent(std::move(physicsComponent));
+
+        auto collisionComponent = std::make_unique<kiko::CircleCollisionComponent>();
+        projectile->AddComponent(std::move(collisionComponent));
+
+        projectile->Initialize();
 
         m_scene->Add(std::move(projectile));
 

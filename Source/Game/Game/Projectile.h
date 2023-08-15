@@ -9,7 +9,7 @@ public:
 	Projectile(const kiko::Transform& transform, float damage, std::string tag, float lifespan = -1.0f) :
 		Actor{ transform, tag, -1.0f, lifespan},
 		m_damage{damage}
-	{ };
+	{ kiko::g_audioSystem.Play("laser"); };
 
 	void Update(float dt) override;
 	void OnCollision(Actor* actor) override;

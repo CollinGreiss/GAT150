@@ -5,6 +5,7 @@
 #include "Memory.h"
 #include "Time.h"
 #include "Logger.h"
+#include "Json.h"
 
 #include "Vector2.h"
 #include "Math/Vector3.h"

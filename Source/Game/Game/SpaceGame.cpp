@@ -10,17 +10,18 @@
 #include "Input/InputSystem.h"
 
 
+
 using namespace kiko;
 
 bool SpaceGame::Initialize() {
 
-	m_scoreText = std::make_unique<Text>(g_resources.Get<Font>("fonts/ARCADECLASSIC.ttf", 24));
+	m_scoreText = std::make_unique<Text>(GET_RESOURCE(Font, "fonts/ARCADECLASSIC.ttf", 24));
 	m_scoreText->Create(kiko::g_renderer, "", kiko::Color{ 1, 1, 1, 1 });
 
-	m_healthText = std::make_unique<Text>(g_resources.Get<Font>("fonts/ARCADECLASSIC.ttf", 24));
+	m_healthText = std::make_unique<Text>(GET_RESOURCE(Font, "fonts/ARCADECLASSIC.ttf", 24));
 	m_healthText->Create(kiko::g_renderer, "", kiko::Color{ 1, 1, 1, 1 });
 
-	m_titleText = std::make_unique<Text>(g_resources.Get<Font>("fonts/ARCADECLASSIC.ttf", 600));
+	m_titleText = std::make_unique<Text>(GET_RESOURCE(Font, "fonts/ARCADECLASSIC.ttf", 600));
 
 	g_audioSystem.AddAudio("laser", "sounds/laser.wav");
 	g_audioSystem.AddAudio("boom", "sounds/explosion.wav");
@@ -67,13 +68,19 @@ void SpaceGame::Update(float dt) {
 			"Player" //tag
 			);
 
-		std::unique_ptr<SpriteComponent> component = std::make_unique<kiko::SpriteComponent>();
-		component->m_texture = g_resources.Get<Texture>("images/Main Ship/Main Ship - Bases/Main Ship - Base - Full health.png", g_renderer);
+		auto component = std::make_unique<SpriteComponent>();
+		component->m_texture = GET_RESOURCE(Texture, "images/Main Ship/Main Ship - Bases/Main Ship - Base - Full health.png", g_renderer);
 		player->AddComponent(std::move(component));
 
-		std::unique_ptr<EnginePhysicsComponent> physicsComponent = std::make_unique<kiko::EnginePhysicsComponent>();
+		auto physicsComponent = std::make_unique<EnginePhysicsComponent>();
 		physicsComponent->m_damping = .9;
 		player->AddComponent(std::move(physicsComponent));
+
+		auto collisionComponent = std::make_unique<CircleCollisionComponent>();
+		collisionComponent->m_radius = 10;
+		player->AddComponent(std::move(collisionComponent));
+
+		player->Initialize();
 
 		m_scene->Add(std::move(player));
 
