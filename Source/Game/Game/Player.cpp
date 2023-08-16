@@ -29,9 +29,9 @@ void Player::Update(float dt) {
     if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_A)) rotate = -1;
     if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_D)) rotate = 1;
 
-    m_transform.rotation += rotate * m_turnRate * dt;
+    transform.rotation += rotate * m_turnRate * dt;
 
-    kiko::vec2 forward = kiko::vec2{ 0, -1 }.Rotate(m_transform.rotation);
+    kiko::vec2 forward = kiko::vec2{ 0, -1 }.Rotate(transform.rotation);
 
 
     if (m_physicsComponent && kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_W)) m_physicsComponent->ApplyForce(forward * m_speed);
@@ -39,9 +39,9 @@ void Player::Update(float dt) {
     if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE) && !kiko::g_inputSystem.GetPreviousKeyDown(SDL_SCANCODE_SPACE)) {
 
         std::unique_ptr<Projectile> projectile = std::make_unique<Projectile>(
-            kiko::Transform{ m_transform.position, m_transform.rotation, 1 },
+            kiko::Transform{ transform.position, transform.rotation, 1 },
             40.0f,
-            m_tag,
+            tag,
             2.0f
             );
 
@@ -65,8 +65,8 @@ void Player::Update(float dt) {
 
     }
 
-    m_transform.position.x = kiko::Wrap(m_transform.position.x, kiko::g_renderer.GetWidth());
-    m_transform.position.y = kiko::Wrap(m_transform.position.y, kiko::g_renderer.GetHeight());
+    transform.position.x = kiko::Wrap(transform.position.x, kiko::g_renderer.GetWidth());
+    transform.position.y = kiko::Wrap(transform.position.y, kiko::g_renderer.GetHeight());
 
 }
 

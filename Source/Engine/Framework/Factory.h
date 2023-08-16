@@ -1,10 +1,15 @@
 #pragma once
 
 #include "Singleton.h"
+#include "Object.h"
 
 #include <memory>
 #include <map>
 #include <string>
+#include "Core/Logger.h"
+
+#define CREATE_CLASS(classname) kiko::Factory::Instance().Create<kiko::classname>(#classname)
+#define CREATE_CLASS_BASE(classbase, classname) kiko::Factory::Instance().Create<classbase>(classname)
 
 namespace kiko {
 
@@ -21,7 +26,7 @@ namespace kiko {
 	template <typename T>
 	class Creator : public CreatorBase {
 
-		virtual std::unique_ptr<T> Create() override {
+		std::unique_ptr<Object> Create() override {
 
 			return std::make_unique<T>();
 
@@ -39,6 +44,11 @@ namespace kiko {
 		template <typename T>
 		std::unique_ptr<T> Create(const std::string& key);
 
+		friend class Singleton;
+
+	protected:
+		Factory() = default;
+
 	private:
 
 		std::map<std::string, std::unique_ptr<CreatorBase>> m_registy;
@@ -48,7 +58,9 @@ namespace kiko {
 	template<typename T>
 	inline void Factory::Register(const std::string& key) {
 
-		m_registy[key] = std::make_unique<Create<T>>();
+		INFO_LOG("Class Registerd: " << key);
+
+		m_registy[key] = std::make_unique<Creator<T>>();
 
 	}
 
@@ -58,7 +70,7 @@ namespace kiko {
 
 		auto iter = m_registy.find(key);
 		if (iter != m_registy.end())
-			return std::unique_ptr<T>(iter->second->Create());
+			return std::unique_ptr<T>(dynamic_cast<T*>(iter->second->Create().release()));
 
 		return std::unique_ptr<T>();
 	

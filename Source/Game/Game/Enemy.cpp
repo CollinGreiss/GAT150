@@ -14,24 +14,24 @@ void Enemy::Update(float dt) {
     Actor::Update(dt);
 
     kiko::vec2 forward = kiko::vec2{ -1, 0 };
-    m_transform.position += (forward * m_speed * dt);
+    transform.position += (forward * m_speed * dt);
 
-    if (m_transform.position.x < -10.0f) {
+    if (transform.position.x < -10.0f) {
 
         m_destroyed = true;
 
     }
 
-    m_transform.position.y = kiko::Clamp(m_transform.position.y, 0.0f, (float)(kiko::g_renderer.GetHeight() - 28));
+    transform.position.y = kiko::Clamp(transform.position.y, 0.0f, (float)(kiko::g_renderer.GetHeight() - 28));
 
     m_firetimer -= dt;
     if (m_firetimer <= 0) {
 
         m_firetimer = m_firerate;
         std::unique_ptr<Projectile> projectile = std::make_unique<Projectile>(
-            kiko::Transform{ m_transform.position, 0, 1 },
+            kiko::Transform{ transform.position, 0, 1 },
             40.0f,
-            m_tag
+            tag
             );
         m_scene->Add(std::move(projectile));
 

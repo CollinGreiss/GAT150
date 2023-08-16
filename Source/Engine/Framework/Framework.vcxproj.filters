@@ -64,7 +64,9 @@
     <ClInclude Include="Singleton.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="Factory.h" />
+    <ClInclude Include="Factory.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp">
@@ -87,6 +89,9 @@
     </ClCompile>
     <ClCompile Include="Components\CircleCollisionComponent.cpp">
       <Filter>Source\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

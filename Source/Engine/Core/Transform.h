@@ -2,6 +2,7 @@
 
 #include "Vector2.h"
 #include "Math/Matrix33.h"
+#include "Core/Json.h"
 
 namespace kiko {
 
@@ -32,6 +33,8 @@ namespace kiko {
 			return mt * ms * mr;
 
 		}
+
+		void Read(const json_t& value);
 
 	};
 

@@ -9,6 +9,9 @@ namespace kiko {
 
 	public:
 
+		CLASS_DECLARATION(ModelRenderComponent)
+
+		bool Initialize() override;
 		void Update(float dt) override;
 		void Draw(class Renderer& renderer) override;
 
@@ -16,6 +19,7 @@ namespace kiko {
 
 	public:
 
+		std::string modelName;
 		res_t<Model> m_model;
 
 	};

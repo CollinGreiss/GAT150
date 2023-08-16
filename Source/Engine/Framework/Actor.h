@@ -13,16 +13,18 @@ namespace kiko {
 
 	public:
 
+		CLASS_DECLARATION(Actor)
+
 		Actor() = default;
 		Actor(const kiko::Transform& transform, std::string tag, float health, float lifespan = -1.0f) :
-			m_transform{ transform },
-			m_tag{ tag },
-			m_lifespan{ lifespan },
-			m_health{ health }
+			transform{ transform },
+			tag{ tag },
+			lifespan{ lifespan },
+			health{ health }
 		{}
 
 		Actor(const kiko::Transform& transform) :
-			m_transform{ transform }
+			transform{ transform }
 		{}
 
 		virtual bool Initialize() override;
@@ -38,14 +40,14 @@ namespace kiko {
 		virtual void OnCollision(Actor* other) {};
 
 		float GetRadius() { return 30; }
-		float GetHealth() { return m_health; }
+		float GetHealth() { return health; }
 
-		std::string GetTag() { return m_tag; }
-		Transform& GetTransform() { return m_transform; }
+		std::string GetTag() { return tag; }
+		Transform& GetTransform() { return transform; }
 
-		void SetLifespan(float lifespan) { m_lifespan = lifespan; }
+		void SetLifespan(float lifespan) { this->lifespan = lifespan; }
 
-		virtual void Damage(float damage) { if (m_health != -1.0f) m_health -= damage; }
+		virtual void Damage(float damage) { if (health != -1.0f) health -= damage; }
 
 		class Scene* m_scene = nullptr;
 		friend class Scene;
@@ -55,20 +57,20 @@ namespace kiko {
 	protected:
 
 		bool m_destroyed = false;
-		float m_lifespan = -1.0f;
-		float m_health = -1.0f;
+		float lifespan = -1.0f;
+		float health = -1.0f;
 
-		Transform m_transform;
-		std::string m_tag;
+		Transform transform;
+		std::string tag;
 
-		std::vector<std::unique_ptr<Component>> m_components;
+		std::vector<std::unique_ptr<Component>> components;
 
 	};
 
 	template<typename T>
 	inline T* Actor::GetComponent() {
 
-		for (auto& component : m_components) {
+		for (auto& component : components) {
 
 			T* result = dynamic_cast<T*> (component.get());
 			if (result) return result;

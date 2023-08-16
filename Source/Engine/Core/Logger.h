@@ -1,23 +1,27 @@
 #pragma once
+
 #include <string>
 #include <fstream>
 #include <cassert>
+#include <iostream>
 
-#ifdef _DEBUG
+#include "Framework/Singleton.h"
 
-#define INFO_LOG(message)               { if (kiko::g_logger.Log(kiko::LogLevel::Info, __FILE__, __LINE__))    { kiko::g_logger << message << "\n"; } }
-#define WARNING_LOG(message)            { if (kiko::g_logger.Log(kiko::LogLevel::Warning, __FILE__, __LINE__)) { kiko::g_logger << message << "\n"; } }
-#define ERROR_LOG(message)              { if (kiko::g_logger.Log(kiko::LogLevel::Error, __FILE__, __LINE__))   { kiko::g_logger << message << "\n"; } }
-#define ASSERT_LOG(condition, message)  { if (!condition && kiko::g_logger.Log(kiko::LogLevel::Assert, __FILE__, __LINE__))  { kiko::g_logger << message << "\n"; } assert(condition); }
+//#ifdef _DEBUG
 
-#else
+#define INFO_LOG(message)               { if (              kiko::Logger::Instance().Log(kiko::LogLevel::Info, __FILE__, __LINE__))    { kiko::Logger::Instance() << message << "\n"; } }
+#define WARNING_LOG(message)            { if (              kiko::Logger::Instance().Log(kiko::LogLevel::Warning, __FILE__, __LINE__)) { kiko::Logger::Instance() << message << "\n"; } }
+#define ERROR_LOG(message)              { if (              kiko::Logger::Instance().Log(kiko::LogLevel::Error, __FILE__, __LINE__))   { kiko::Logger::Instance() << message << "\n"; } }
+#define ASSERT_LOG(condition, message)  { if (!condition && kiko::Logger::Instance().Log(kiko::LogLevel::Assert, __FILE__, __LINE__))  { kiko::Logger::Instance() << message << "\n"; } assert(condition); }
 
-#define INFO_LOG(message)     {}
-#define WARNING_LOG(message)  {}
-#define ERROR_LOG(message)    {}
-#define ASSERT_LOG(condition, message)   {}
-
-#endif
+//#else
+//
+//#define INFO_LOG(message)     {}
+//#define WARNING_LOG(message)  {}
+//#define ERROR_LOG(message)    {}
+//#define ASSERT_LOG(condition, message)   {}
+//
+//#endif
 
 namespace kiko {
 
@@ -29,11 +33,11 @@ namespace kiko {
 		Assert
 	};
 
-	class Logger {
+	class Logger : public Singleton<Logger> {
 
 	public:
 
-		Logger(LogLevel loglevel, std::ostream* ostream, const std::string& filename = "") :
+		Logger(LogLevel loglevel = LogLevel::Info, std::ostream* ostream = &std::cout, const std::string& filename = "log.txt") :
 			m_logLevel{ loglevel }, 
 			m_ostream{ ostream }
 		{ 
@@ -52,8 +56,6 @@ namespace kiko {
 		std::ofstream m_fstream;
 
 	};
-
-	extern Logger g_logger;
 
 	template<typename T>
 	inline Logger& Logger::operator << (T value) {

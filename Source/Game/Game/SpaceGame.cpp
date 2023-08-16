@@ -68,15 +68,15 @@ void SpaceGame::Update(float dt) {
 			"Player" //tag
 			);
 
-		auto component = std::make_unique<SpriteComponent>();
+		auto component = CREATE_CLASS(SpriteComponent);
 		component->m_texture = GET_RESOURCE(Texture, "images/Main Ship/Main Ship - Bases/Main Ship - Base - Full health.png", g_renderer);
 		player->AddComponent(std::move(component));
 
-		auto physicsComponent = std::make_unique<EnginePhysicsComponent>();
+		auto physicsComponent = CREATE_CLASS(EnginePhysicsComponent);
 		physicsComponent->m_damping = .9;
 		player->AddComponent(std::move(physicsComponent));
 
-		auto collisionComponent = std::make_unique<CircleCollisionComponent>();
+		auto collisionComponent = CREATE_CLASS(CircleCollisionComponent);
 		collisionComponent->m_radius = 10;
 		player->AddComponent(std::move(collisionComponent));
 
