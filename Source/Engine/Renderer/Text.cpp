@@ -31,4 +31,23 @@ namespace kiko {
 	
 	}
 
+	void Text::Draw(Renderer& renderer, const Transform& transform) {
+
+		int width, height;
+		SDL_QueryTexture(m_texture, nullptr, nullptr, &width, &height);
+
+		mat3 mx = transform.GetMatrix();
+		vec2 position = mx.GetTranslation();
+		vec2 size = vec2{ width, height } *mx.GetScale();
+
+		SDL_Rect dest;
+		dest.x = (int)(position.x - (size.x / 2));
+		dest.y = (int)(position.y - (size.x / 2));
+		dest.w = (int)size.x;
+		dest.h = (int)size.y;
+
+		SDL_RenderCopyEx(renderer.m_renderer, m_texture, nullptr, &dest, RadToDeg(mx.GetRotation()), nullptr, SDL_FLIP_NONE);
+
+	}
+
 }

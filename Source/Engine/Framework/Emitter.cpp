@@ -1,5 +1,6 @@
 #include "Emitter.h"
 
+#include "Core/Random.h"
 #include "Renderer/ParticleSystem.h"
 
 namespace kiko {

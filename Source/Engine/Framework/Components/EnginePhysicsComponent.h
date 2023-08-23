@@ -9,7 +9,7 @@ namespace kiko {
 
 	public:
 
-		CLASS_DECLARATION(EnginePhysicsComponent);
+		CLASS_DECLARATION(EnginePhysicsComponent)
 
 		virtual void ApplyForce(const vec2& force) override;
 		virtual void Update(float dt) override;

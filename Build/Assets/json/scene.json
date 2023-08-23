@@ -1,0 +1,92 @@
+{
+
+	"actors": [
+		{
+
+			"type": "Actor",
+			"name": "Background",
+			"persostent": true,
+			"transform": {
+				"position": [ 400.0, 300.0 ],
+				"scale": 0.6,
+				"rotation": 0.0
+			},
+			"components": [
+
+				{
+					"type": "SpriteComponent",
+					"textureName": "images/space_background.jpg"
+				}
+
+			]
+
+		},
+
+		{
+			"type": "Actor",
+			"name": "Title",
+			"persistent": true,
+			"transform": {
+				"position": [ 400, 300 ],
+				"scale": 2,
+				"rotation": 0
+			},
+			"components": [
+				{
+					"type": "TextRenderComponent",
+					"fontName": "arcadeclassic.ttf",
+					"fontSize": 96,
+					"text": "Space Run"
+				}
+			]
+		},
+
+		{
+			"type": "Actor",
+			"name": "GameOverText",
+			"persistent": true,
+			"transform": {
+				"position": [ 400, 300 ],
+				"scale": 2,
+				"rotation": 0
+			},
+			"components": [
+				{
+					"type": "TextRenderComponent",
+					"fontName": "arcadeclassic.ttf",
+					"fontSize": 96,
+					"text": "Game Over"
+				}
+			]
+		},
+
+		{
+
+			"type": "Projectile",
+			"name": "Rocket",
+			"prototype": true,
+			"lifetspan": 2.0,
+			"transform": {
+				"position": [ 400.0, 300.0 ],
+				"scale": 1.0,
+				"rotation": 0.0
+			},
+			"components": [
+
+				{
+					"type": "SpriteComponent",
+					"textureName": "images/rocket.png"
+				},
+				{
+					"type": "EnginePhysicsComponent",
+					"damping": 0.0,
+					"acceleration": [10, 10]
+				}
+
+			]
+
+		}
+
+	]
+
+}

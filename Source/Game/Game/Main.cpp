@@ -1,28 +1,25 @@
 #include <iostream>
 
-#include "Core/Core.h"
-
-#include "Framework/Framework.h"
+#include "Core/Memory.h"
+#include "Core/Random.h"
+#include "Core/FileIO.h"
+#include "Core/Time.h"
+#include "Core/Logger.h"
 
 #include "Renderer/Renderer.h"
 #include "Audio/AudioSystem.h"
 #include "Input/InputSystem.h"
+#include "Physics/PhysicsSystem.h"
 
 #include "SpaceGame.h"
-
-#include <thread>
-
-#include "Player.h"
-
-#include "rapidjson/include/document.h"
 
 using namespace std;
 using namespace kiko;
 
 int main(int argc, char* argv[]) {
 
-    INFO_LOG("Start...");
-
+    INFO_LOG("Initializing Game Engine...");
+    
     MemoryTracker::Initialize();
 
     /////Setup
@@ -31,11 +28,11 @@ int main(int argc, char* argv[]) {
     setFilePath("assets");
 
     g_renderer.Initialize();
-    g_renderer.CreateWindow("CSC195", 800, 600);
+    g_renderer.CreateWindow("GAT150", 800, 600);
 
     g_inputSystem.Initialize();
     g_audioSystem.Initialize();
-
+    PhysicsSystem::Instance().Initialize();
 
     unique_ptr<SpaceGame> game = make_unique<SpaceGame>();
     game->Initialize();

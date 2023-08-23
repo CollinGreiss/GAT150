@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Core/Core.h"
+#include "Core/Vector2.h"
+#include "Core/Transform.h"
+#include "Core/Color.h"
 #include "Framework/Resource/Resource.h"
 #include <vector>
 
@@ -29,7 +31,7 @@ namespace kiko {
 	private:
 
 		std::vector<vec2> m_points;
-		float m_radius;
+		float m_radius = 0.0f;
 		Color m_color;
 
 	};

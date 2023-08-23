@@ -49,7 +49,9 @@
     <ClInclude Include="Math\Matrix33.h">
       <Filter>Source\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Json.h" />
+    <ClInclude Include="Json.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FileIO.cpp">

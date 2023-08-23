@@ -8,16 +8,25 @@ namespace kiko {
 
 	void EnginePhysicsComponent::Update(float dt) {
 
-		m_velocity += m_acceleration * dt;
-		m_owner->GetTransform().position += m_velocity * dt;
-		m_velocity *= std::pow(1.0f - m_damping, dt);
+		velocity += acceleration * dt;
+		m_owner->GetTransform().position += velocity * dt;
+		velocity *= std::pow(1.0f - damping, dt);
 
 	}
 
 	void EnginePhysicsComponent::ApplyForce(const vec2& force) {
 
-		m_velocity += force;
+		velocity += force;
 
+	}
+
+	void EnginePhysicsComponent::Read(const json_t& value) {
+		
+		READ_DATA(value, damping);
+		READ_DATA(value, acceleration);
+		READ_DATA(value, velocity);
+		READ_DATA(value, mass);
+	
 	}
 
 }

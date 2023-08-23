@@ -35,8 +35,8 @@ namespace kiko {
 
 	private:
 
-		float m_time;
-		float m_deltaTime;
+		float m_time = 0.0f;
+		float m_deltaTime = 0.0f;
 		float m_timeScale = 1;
 
 		clock::time_point m_startTime;

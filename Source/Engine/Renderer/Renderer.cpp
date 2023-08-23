@@ -96,8 +96,8 @@ namespace kiko {
         vec2 size = texture->GetSize();
         SDL_Rect dest;
         
-        dest.x = (int) x - (size.x * .5);
-        dest.y = (int) y - (size.y * .5);
+        dest.x = (int) x - (size.x * 0.5f);
+        dest.y = (int) y - (size.y * 0.5f);
         dest.w = size.x;
         dest.h = size.y;
 
@@ -114,8 +114,8 @@ namespace kiko {
 
         vec2 position = mx.GetTranslation();
 
-        dest.x = (int)position.x - (size.x * .5);
-        dest.y = (int)position.y - (size.y * .5);
+        dest.x = (int)position.x - (size.x * 0.5f);
+        dest.y = (int)position.y - (size.y * 0.5f);
         dest.w = size.x;
         dest.h = size.y;
 

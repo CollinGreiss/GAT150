@@ -3,13 +3,13 @@
 #include "Player.h"
 #include "Enemy.h"
 
+#include "Core/Random.h"
+
 #include "Framework/Framework.h"
 #include "Renderer/Renderer.h"
 
 #include "Audio/AudioSystem.h"
 #include "Input/InputSystem.h"
-
-
 
 using namespace kiko;
 
@@ -21,12 +21,15 @@ bool SpaceGame::Initialize() {
 	m_healthText = std::make_unique<Text>(GET_RESOURCE(Font, "fonts/ARCADECLASSIC.ttf", 24));
 	m_healthText->Create(kiko::g_renderer, "", kiko::Color{ 1, 1, 1, 1 });
 
-	m_titleText = std::make_unique<Text>(GET_RESOURCE(Font, "fonts/ARCADECLASSIC.ttf", 600));
-
 	g_audioSystem.AddAudio("laser", "sounds/laser.wav");
 	g_audioSystem.AddAudio("boom", "sounds/explosion.wav");
 
 	m_scene = std::make_unique<Scene>();
+	m_scene->Load("json/scene.json");
+	m_scene->Initialize();
+
+	EVENT_SUBSCRIBE("OnAddPoints", SpaceGame::OnAddPoints);
+	EVENT_SUBSCRIBE("OnPlayerDead", SpaceGame::OnPlayerDead);
 
 	return true;
 
@@ -44,7 +47,10 @@ void SpaceGame::Update(float dt) {
 
 	case SpaceGame::Title:
 
-		m_titleText->Create(kiko::g_renderer, "Space Run", kiko::Color{ 1, 1, 1, 1 });
+		m_scene->GetActor("GameOverText")->disabled = true;
+		m_scene->GetActor("Background")->disabled = true;
+
+		m_scene->GetActor("Title")->disabled = false;
 		if (g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE))
 			m_state = eState::StateGame;
 
@@ -52,6 +58,7 @@ void SpaceGame::Update(float dt) {
 
 	case SpaceGame::StateGame:
 
+		m_scene->GetActor("Title")->disabled = true;
 		m_score = 0;
 		m_state = eState::StartLevel;
 
@@ -59,6 +66,9 @@ void SpaceGame::Update(float dt) {
 
 	case SpaceGame::StartLevel:
 	{
+
+		if (auto background = m_scene->GetActor("Background"))
+			background->disabled = false;
 
 		std::unique_ptr<Player> player = std::make_unique<Player>(
 			100.0f, //health
@@ -69,11 +79,11 @@ void SpaceGame::Update(float dt) {
 			);
 
 		auto component = CREATE_CLASS(SpriteComponent);
-		component->m_texture = GET_RESOURCE(Texture, "images/Main Ship/Main Ship - Bases/Main Ship - Base - Full health.png", g_renderer);
+		component->m_texture = GET_RESOURCE(Texture, "images/Ship/base/normal.png", g_renderer);
 		player->AddComponent(std::move(component));
 
 		auto physicsComponent = CREATE_CLASS(EnginePhysicsComponent);
-		physicsComponent->m_damping = .9;
+		physicsComponent->damping = 0.9f;
 		player->AddComponent(std::move(physicsComponent));
 
 		auto collisionComponent = CREATE_CLASS(CircleCollisionComponent);
@@ -91,16 +101,7 @@ void SpaceGame::Update(float dt) {
 
 	case SpaceGame::Game:
 
-		if (!m_scene->GetActor<Player>()) {
-
-			m_state = eState::PlayerDead;
-
-		}
-		else {
-
-			m_healthText->Create(g_renderer, "Health     " + std::to_string((int) m_scene->GetActor<Player>()->GetHealth()), { 1, 1, 1, 1 });
-
-		}
+		m_healthText->Create(g_renderer, "Health     " + std::to_string((int) m_scene->GetActor<Player>()->GetHealth()), { 1, 1, 1, 1 });
 
 		m_spawnTimer += dt;
 
@@ -123,7 +124,7 @@ void SpaceGame::Update(float dt) {
 
 	case SpaceGame::GameOver:
 
-		m_titleText->Create(kiko::g_renderer, "Game Over!", kiko::Color{ 1, 1, 1, 1 });
+		m_scene->GetActor("GameOverText")->disabled = false;
 		if (g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE))
 			m_state = eState::Title;
 
@@ -143,13 +144,23 @@ void SpaceGame::Update(float dt) {
 
 void SpaceGame::Draw(kiko::Renderer& renderer) {
 
-	if (m_state == eState::Title || m_state == eState::GameOver)
-		m_titleText->Draw(g_renderer, 300, 300);
+	m_scene->Draw(renderer);
+	g_particleSystem.Draw(renderer);
+
 
 	m_scoreText->Draw(g_renderer, 10, 10);
 	m_healthText->Draw(g_renderer, 200, 10);
 
-	m_scene->Draw(renderer);
-	g_particleSystem.Draw(renderer);
+}
+
+void SpaceGame::OnAddPoints(const kiko::Event& event) {
+
+	m_score += std::get<int>(event.data);
+
+}
+
+void SpaceGame::OnPlayerDead(const kiko::Event& event) {
+
+	m_state = eState::PlayerDead;
 
 }

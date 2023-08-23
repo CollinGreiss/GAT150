@@ -23,6 +23,9 @@ bool Player::Initialize() {
 
 void Player::Update(float dt) {
 
+    if (health <= 0.0f)
+        kiko::EventManager::Instance().DispatchEvent("OnPlayerDead", 100);
+
     Actor::Update(dt);
 
     float rotate = 0;
@@ -38,29 +41,15 @@ void Player::Update(float dt) {
 
     if (kiko::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE) && !kiko::g_inputSystem.GetPreviousKeyDown(SDL_SCANCODE_SPACE)) {
 
-        std::unique_ptr<Projectile> projectile = std::make_unique<Projectile>(
-            kiko::Transform{ transform.position, transform.rotation, 1 },
-            40.0f,
-            tag,
-            2.0f
-            );
+        auto projectile = INSTANTIATE(kiko::Projectile, "Rocket");
+        projectile->SetTransform( { transform.position, transform.rotation, 1 } );
+        if (auto physicsComponent = projectile->GetComponent<kiko::PhysicsComponent>()) {
 
-        std::unique_ptr<kiko::SpriteComponent> component = std::make_unique<kiko::SpriteComponent>();
-        component->m_texture = GET_RESOURCE(kiko::Texture, "images/rocket.png", kiko::g_renderer);
-        projectile->AddComponent(std::move(component));
+            if (m_physicsComponent) physicsComponent->velocity = m_physicsComponent->velocity;
+            physicsComponent->acceleration = forward * m_speed * m_speed * m_speed;
 
-        std::unique_ptr<kiko::EnginePhysicsComponent> physicsComponent = std::make_unique<kiko::EnginePhysicsComponent>();
-        physicsComponent->m_damping = 0;
-        if (m_physicsComponent) physicsComponent->m_velocity = m_physicsComponent->m_velocity;
-        physicsComponent->m_acceleration = (forward * m_speed * m_speed * m_speed);
-       
-        projectile->AddComponent(std::move(physicsComponent));
-
-        auto collisionComponent = std::make_unique<kiko::CircleCollisionComponent>();
-        projectile->AddComponent(std::move(collisionComponent));
-
+        }
         projectile->Initialize();
-
         m_scene->Add(std::move(projectile));
 
     }

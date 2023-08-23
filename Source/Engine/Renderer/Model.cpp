@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include "Renderer.h"
+#include "Core/FileIO.h"
 
 namespace kiko{
 

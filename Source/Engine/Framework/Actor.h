@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Object.h"
-#include "Core/Core.h"
+#include "Core/Transform.h"
+#include "Core/Vector2.h"
 #include "Renderer/Model.h"
 #include "Components/SpriteComponent.h"
 #include "Components/EnginePhysicsComponent.h"
@@ -27,6 +28,8 @@ namespace kiko {
 			transform{ transform }
 		{}
 
+		Actor(const Actor& other);
+
 		virtual bool Initialize() override;
 		virtual void OnDestroy() override;
 
@@ -41,10 +44,12 @@ namespace kiko {
 
 		float GetRadius() { return 30; }
 		float GetHealth() { return health; }
+		bool isPersistent() { return persistent; }
 
 		std::string GetTag() { return tag; }
 		Transform& GetTransform() { return transform; }
 
+		void SetTransform(const Transform& transform) { this->transform = transform; }
 		void SetLifespan(float lifespan) { this->lifespan = lifespan; }
 
 		virtual void Damage(float damage) { if (health != -1.0f) health -= damage; }
@@ -59,6 +64,8 @@ namespace kiko {
 		bool m_destroyed = false;
 		float lifespan = -1.0f;
 		float health = -1.0f;
+		bool persistent = false;
+		bool prototype = false;
 
 		Transform transform;
 		std::string tag;

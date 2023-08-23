@@ -18,6 +18,8 @@ namespace kiko {
 
 		}
 
+		friend class Singleton;
+
 	protected:
 
 		Singleton() = default;

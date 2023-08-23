@@ -6,7 +6,8 @@
 
 #define CLASS_DECLARATION(classname) \
 	virtual const char* GetClassName() { return #classname; } \
-	void Read(const json_t& value); \
+	virtual void Read(const json_t& value); \
+	virtual std::unique_ptr<Object> Clone() { return std::make_unique<classname>(*this); } \
 	class Register { \
 	public: \
 		Register() { \
@@ -32,8 +33,9 @@ namespace kiko {
 		virtual bool Initialize() { return true; }
 		virtual void OnDestroy() {}
 
-	protected:
+	public:
 
+		bool disabled = false;
 		std::string name;
 
 	};

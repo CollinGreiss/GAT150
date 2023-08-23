@@ -1,23 +1,20 @@
 #pragma once
 
-#include "Framework/Components/Component.h"
 #include "Audio/AudioSystem.h"
+#include "Core/Transform.h"
+#include "Framework/Actor.h"
 
 namespace kiko {
 
-	class Projectile : public Component {
+	class Projectile : public Actor {
 
 	public:
 
-		/*Projectile(const kiko::Transform& transform, float damage, std::string tag, float lifespan = -1.0f) :
-			Actor{ transform, tag, -1.0f, lifespan },
-			m_damage{ damage }
-		{};*/
+		CLASS_DECLARATION(Projectile)
 
 		bool Initialize() override;
 		void Update(float dt) override;
 		void OnCollision(Actor* actor);
-		void Read(const json_t& value);
 
 	private:
 

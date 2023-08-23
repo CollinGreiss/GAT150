@@ -3,13 +3,16 @@
 #include "Player.h"
 #include "Framework/Emitter.h"
 #include "Projectile.h"
-#include "Framework/Scene.h"
+#include "Framework/Framework.h"
 #include "Renderer/ModelManager.h"
 #include "Renderer/Renderer.h"
 
 #include <memory>
 
 void Enemy::Update(float dt) {
+
+    if (health <= 0.0f)
+        kiko::EventManager::Instance().DispatchEvent("OnAddPoints", 100);
 
     Actor::Update(dt);
 
@@ -28,12 +31,6 @@ void Enemy::Update(float dt) {
     if (m_firetimer <= 0) {
 
         m_firetimer = m_firerate;
-        std::unique_ptr<Projectile> projectile = std::make_unique<Projectile>(
-            kiko::Transform{ transform.position, 0, 1 },
-            40.0f,
-            tag
-            );
-        m_scene->Add(std::move(projectile));
 
     }
 

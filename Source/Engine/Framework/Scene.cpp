@@ -4,13 +4,21 @@
 
 namespace kiko {
 
+	bool Scene::Initialize() {
+
+		for (auto& actor : m_actors)
+			actor->Initialize();
+
+		return true;
+	
+	}
+
 	void Scene::Update(float dt) {
 
 		auto iter = m_actors.begin();
 		while (iter != m_actors.end()) {
 
-			(*iter)->Update(dt);
-
+			if ( !(*iter)->disabled ) (*iter)->Update(dt);
 			( (*iter)->m_destroyed ) ? iter = m_actors.erase(iter) :  iter++;
 
 		}
@@ -41,7 +49,7 @@ namespace kiko {
 	void Scene::Draw(Renderer& renderer) {
 
 		for (auto& actor : m_actors)
-			actor->Draw(renderer);
+			if (!actor->disabled) actor->Draw(renderer);
 
 	}
 
@@ -52,11 +60,64 @@ namespace kiko {
 
 	}
 
-	void Scene::RemoveAll() {
+	void Scene::RemoveAll(bool force) {
 
-		m_actors.clear();
+		auto iter = m_actors.begin();
+		while (iter != m_actors.end()) {
+
+			if (!(*iter)->isPersistent() || force)
+				iter = m_actors.erase(iter);
+			else
+				iter++;
+
+		}
+
 
 	}
 
+	bool Scene::Load(const std::string& filename) {
+
+		rapidjson::Document document;
+		if (!Json::Load(filename, document)) {
+
+			ERROR_LOG("Could not load scene file! " << filename);
+			return false;
+
+		}
+
+		Read(document);
+
+		return false;
+	
+	}
+
+	void Scene::Read(const json_t& value) {
+
+		if (HAS_DATA(value, actors) && GET_DATA(value, actors).IsArray()) {
+
+			for (auto& actorValue : GET_DATA(value, actors).GetArray()) {
+
+				std::string type;
+				READ_DATA(actorValue, type);
+
+				auto actor = CREATE_CLASS_BASE(Actor, type);
+				actor->Read(actorValue);
+
+				if (actor->prototype) {
+
+					std::string name = actor->name;
+					Factory::Instance().RegisterPrototype(name, std::move(actor));
+
+				} else {
+
+					Add(std::move(actor));
+
+				}
+
+			}
+
+		}
+
+	}
 
 }

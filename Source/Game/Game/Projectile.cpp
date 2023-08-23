@@ -1,4 +1,5 @@
 #include "Projectile.h"
+
 #include "Input/InputSystem.h"
 #include <Framework/Emitter.h>
 #include "Framework/Scene.h"
@@ -8,10 +9,26 @@
 
 namespace kiko {
 
+    CLASS_DEFINITION(Projectile);
+
     bool Projectile::Initialize() {
 
         kiko::g_audioSystem.Play("laser");
-        auto collisoinComponent = m_owner->GetComponent<kiko::CollisionComponent>();
+        Actor::Initialize();
+
+        auto collisoinComponent = GetComponent<CollisionComponent>();
+        if (collisoinComponent) {
+
+            auto renderComponent = GetComponent<RenderComponent>();
+            if (renderComponent) {
+
+                float sacle = transform.scale;
+                collisoinComponent->m_radius = renderComponent->GetRadius();
+
+
+            }
+
+        }
 
         return true;
 
@@ -23,15 +40,16 @@ namespace kiko {
 
     }
 
-    void kiko::Projectile::Read(const json_t& value {
+    void kiko::Projectile::Read(const json_t& value) {
 
-        READ_DATA(value, damage)
+        Actor::Read(value);
+        READ_DATA(value, damage);
 
     }
 
     void Projectile::OnCollision(Actor* other) {
 
-        if (other->GetTag() != m_owner->GetTag()) {
+        if (other->GetTag() != GetTag()) {
 
             kiko::EmitterData data;
 
@@ -54,7 +72,7 @@ namespace kiko {
 
             kiko::g_audioSystem.Play("boom");
 
-            m_owner->SetLifespan(0.0f) = true;
+            SetLifespan(0.0f);
             other->Damage(damage);
 
         }
