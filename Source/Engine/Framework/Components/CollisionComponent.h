@@ -8,11 +8,13 @@ namespace kiko {
 
 	public:
 
-		virtual bool CheckCollision(CollisionComponent* collision) = 0;
+		virtual bool CheckCollision(CollisionComponent* collision) { return true; };
+		virtual float Top() { return -1.0; }
+		virtual float Bottem() { return -1.0; }
 
 	public:
 
-		float m_radius = 0;
+		float radius = 0;
 
 	};
 

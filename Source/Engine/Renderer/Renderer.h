@@ -2,7 +2,7 @@
 
 #include <SDL2-2.28.1/include/SDL.h>
 #include <string>
-#include <Core/Vector2.h>
+#include <Core/Math/Vector2.h>
 
 #include "ParticleSystem.h"
 #include "Texture.h"
@@ -34,8 +34,9 @@ namespace kiko {
 		void DrawPoint(float x, float y);
 		void DrawPoint(vec2& p);
 
-		void DrawTexture(class Texture* texture, float x, float y, float angle = 0.0f);
-		void DrawTexture(class Texture* texture, const Transform& transform);
+		void DrawTexture(class Texture* texture, float x, float y, vec2 origin, bool flipH, float angle = 0.0f);
+		void DrawTexture(class Texture* texture, const Transform& transform, vec2 origin, bool flipH);
+		void DrawTexture(class Texture* texture, const Rect& source, const Transform& transform, vec2 origin, bool flipH);
 
 		int GetWidth() const { return m_width; }
 		int GetHeight() const { return m_height; }

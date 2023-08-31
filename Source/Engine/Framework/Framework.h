@@ -7,10 +7,14 @@
 #include "Factory.h"
 
 #include "Resource/ResourceManager.h"
+#include "Event/EventManager.h"
 
 #include "Components/EnginePhysicsComponent.h"
 #include "Components/SpriteComponent.h"
+#include "Components/AnimatedSpriteComponent.h"
 #include "Components/ModelRenderComponent.h"
 #include "Components/CircleCollisionComponent.h"
-#include "Event/EventManager.h"
+#include "Components/Box2DCollisionComponent.h"
+#include "Components/Box2DPhysicsComponent.h"
+#include "Components/TilemapComponent.h"
 

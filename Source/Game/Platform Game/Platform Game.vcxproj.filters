@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{83833bcf-a724-463d-9075-d2546d72941e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Object">
+      <UniqueIdentifier>{da4a1f86-0ec5-4e24-a04b-70dc928eaf34}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="PlatformGame.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform.cpp">
+      <Filter>Source\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Handler.cpp">
+      <Filter>Source\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Portal.cpp">
+      <Filter>Source\Object</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PlatformGame.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Source\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform.h">
+      <Filter>Source\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Handler.h">
+      <Filter>Source\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Portal.h">
+      <Filter>Source\Object</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\Build\Assets\json\platform.json">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\..\..\Build\Assets\json\level1.json">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\..\..\Build\Assets\json\Level3.json">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\..\..\Build\Assets\json\Level4.json">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\..\..\Build\Assets\json\Level5.json">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\..\..\Build\Assets\json\Level2.json">
+      <Filter>Resources</Filter>
+    </None>
+  </ItemGroup>
+</Project>

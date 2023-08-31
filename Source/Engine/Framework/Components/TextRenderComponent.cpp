@@ -21,7 +21,7 @@ namespace kiko {
 	bool TextRenderComponent::Initialize() {
 
 		if (!fontName.empty()) // <GET_RESOURCE with font type, font name and fontsize>
-			m_text = std::make_unique<kiko::Text>(GET_RESOURCE(Font, "fonts/" + fontName, fontSize));
+			m_text = std::make_unique<kiko::Text>(GET_RESOURCE(Font, fontName, fontSize));
 		
 		return true;
 
@@ -33,7 +33,7 @@ namespace kiko {
 
 		if (m_changed) {
 			m_changed = false;
-			m_text->Create(renderer, text, { 1, 1, 1, 1 });
+			m_text->Create(renderer, text, color);
 		}
 
 		m_text->Draw(renderer, m_owner->GetTransform());
@@ -54,6 +54,7 @@ namespace kiko {
 		READ_DATA(value, text);
 		READ_DATA(value, fontName);
 		READ_DATA(value, fontSize);
+		READ_DATA(value, color);
 
 	}
 

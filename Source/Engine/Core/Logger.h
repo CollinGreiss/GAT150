@@ -7,21 +7,21 @@
 
 #include "Framework/Singleton.h"
 
-//#ifdef _DEBUG
+#ifdef _DEBUG
 
 #define INFO_LOG(message)               { if (              kiko::Logger::Instance().Log(kiko::LogLevel::Info, __FILE__, __LINE__))    { kiko::Logger::Instance() << message << "\n"; } }
 #define WARNING_LOG(message)            { if (              kiko::Logger::Instance().Log(kiko::LogLevel::Warning, __FILE__, __LINE__)) { kiko::Logger::Instance() << message << "\n"; } }
 #define ERROR_LOG(message)              { if (              kiko::Logger::Instance().Log(kiko::LogLevel::Error, __FILE__, __LINE__))   { kiko::Logger::Instance() << message << "\n"; } }
 #define ASSERT_LOG(condition, message)  { if (!condition && kiko::Logger::Instance().Log(kiko::LogLevel::Assert, __FILE__, __LINE__))  { kiko::Logger::Instance() << message << "\n"; } assert(condition); }
 
-//#else
-//
-//#define INFO_LOG(message)     {}
-//#define WARNING_LOG(message)  {}
-//#define ERROR_LOG(message)    {}
-//#define ASSERT_LOG(condition, message)   {}
-//
-//#endif
+#else
+
+#define INFO_LOG(message)     {}
+#define WARNING_LOG(message)  {}
+#define ERROR_LOG(message)    {}
+#define ASSERT_LOG(condition, message)   {}
+
+#endif
 
 namespace kiko {
 

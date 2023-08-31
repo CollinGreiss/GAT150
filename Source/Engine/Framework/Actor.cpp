@@ -11,6 +11,7 @@ namespace kiko {
 		name = other.name;
 		tag = other.tag;
 		lifespan = other.lifespan;
+		health = other.health;
 		transform = other.transform;
 		m_scene = other.m_scene;
 		m_game = other.m_game;
@@ -32,7 +33,7 @@ namespace kiko {
 		auto collisionComponent = GetComponent<kiko::CollisionComponent>();
 		auto renderComponent = GetComponent<kiko::RenderComponent>();
 		if (collisionComponent && renderComponent)
-			collisionComponent->m_radius = renderComponent->GetRadius() * transform.scale;
+			collisionComponent->radius = renderComponent->GetRadius() * transform.scale;
 
 		return true;
 
@@ -53,8 +54,8 @@ namespace kiko {
 		if (health <= 0 && health != -1.0f)
 			m_destroyed = true;
 
-		if ((GetComponent<PhysicsComponent>()))
-			GetComponent<PhysicsComponent>()->Update(dt);
+		for (auto& component : components)
+			component->Update(dt);
 
 	}
 
@@ -85,6 +86,7 @@ namespace kiko {
 		READ_DATA(value, health);
 		READ_DATA(value, persistent);
 		READ_DATA(value, prototype);
+		READ_DATA(value, disabled);
 
 		if (HAS_DATA(value, transform)) transform.Read(GET_DATA(value, transform));
 

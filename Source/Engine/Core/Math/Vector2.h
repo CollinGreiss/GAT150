@@ -22,6 +22,7 @@ namespace kiko {
 		float& operator [] (size_t index) { return (&x)[index]; }
 
 		Vector2 operator - () const { return Vector2(-x, -y); }
+		bool operator == (const Vector2& v) const { return (x == v.x && y == v.y); }
 
 		Vector2 operator + (const Vector2& v) const { return Vector2(x + v.x, y + v.y); }
 		Vector2 operator - (const Vector2& v) const { return Vector2(x - v.x, y - v.y); }
@@ -54,6 +55,11 @@ namespace kiko {
 
 		float Angle() { return std::atan2f(y, x); }
 		Vector2 Rotate(float radians) const;
+
+		static const Vector2 UP() { return { 0, -1 }; };
+		static const Vector2 DOWN() { return { 0, 1 }; };
+		static const Vector2 LEFT() { return { -1, 0 }; }
+		static const Vector2 RIGHT() { return { 1, 0 }; };
 
 	};
 

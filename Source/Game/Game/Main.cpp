@@ -48,7 +48,11 @@ int main(int argc, char* argv[]) {
         g_inputSystem.Update();
         
         if (g_inputSystem.GetKeyDown(SDL_SCANCODE_ESCAPE)) quit = true;
-         
+        
+        g_particleSystem.Update(g_time.GetDeltaTime());
+        PhysicsSystem::Instance().Update(g_time.GetDeltaTime());
+
+
         game->Update(g_time.GetDeltaTime());
 
         /////// Drawing
@@ -57,6 +61,7 @@ int main(int argc, char* argv[]) {
         g_renderer.BeginFrame();
 
         game->Draw(g_renderer);
+        g_particleSystem.Draw(g_renderer);
 
         g_renderer.EndFrame();
 

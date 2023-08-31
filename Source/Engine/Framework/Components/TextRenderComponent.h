@@ -24,6 +24,7 @@ namespace kiko {
 		std::string text;
 		std::string fontName;
 		int fontSize = 0;
+		class Color color{1, 1, 1, 1};
 
 	private:
 

@@ -45,6 +45,7 @@
 			"type": "Actor",
 			"name": "GameOverText",
 			"persistent": true,
+			"disabled": true,
 			"transform": {
 				"position": [ 400, 300 ],
 				"scale": 2,
@@ -66,6 +67,7 @@
 			"name": "Rocket",
 			"prototype": true,
 			"lifetspan": 2.0,
+			"speed": 5.0,
 			"transform": {
 				"position": [ 400.0, 300.0 ],
 				"scale": 1.0,
@@ -78,9 +80,83 @@
 					"textureName": "images/rocket.png"
 				},
 				{
-					"type": "EnginePhysicsComponent",
+					"type": "Box2DPhysicsComponent",
 					"damping": 0.0,
-					"acceleration": [10, 10]
+					"gravityScale": 0.0
+				},
+				{
+					"type": "Box2DCollisionComponent",
+					"size": [ 8, 8 ]
+				}
+
+			]
+
+		},
+
+		{
+
+			"type": "Player",
+			"name": "Player",
+			"tag": "Player",
+			"prototype": true,
+			"transform": {
+				"position": [ 400.0, 300.0 ],
+				"scale": 1.0,
+				"rotation": 0.0
+			},
+			"speed": 3.0,
+			"turnRate": 25.0,
+			"health": 100.0,
+			"components": [
+
+				{
+					"type": "SpriteComponent",
+					"textureName": "images/ship/player/normal.png"
+				},
+				{
+					"type": "Box2DPhysicsComponent",
+					"damping": 2.0,
+					"angularDamping": 0.98,
+					"gravityScale": 0.0
+				},
+				{
+					"type": "Box2DCollisionComponent",
+					"size": [ 32, 32 ]
+				}
+
+			]
+
+		},
+
+		{
+
+			"type": "Enemy",
+			"name": "Enemy",
+			"tag": "Enemy",
+			"prototype": true,
+			"transform": {
+				"position": [ 100.0, 100.0 ],
+				"scale": 1.0,
+				"rotation": 0.0
+			},
+			"speed": 2.0,
+			"turnRate": 25.0,
+			"health": 100.0,
+			"components": [
+
+				{
+					"type": "SpriteComponent",
+					"textureName": "images/ship/enemy/normal.png"
+				},
+				{
+					"type": "Box2DPhysicsComponent",
+					"damping": 2.0,
+					"angularDamping": 0.98,
+					"gravityScale": 0.0
+				},
+				{
+					"type": "Box2DCollisionComponent",
+					"size": [ 32, 32 ]
 				}
 
 			]

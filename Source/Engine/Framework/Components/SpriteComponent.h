@@ -2,6 +2,7 @@
 
 #include "RenderComponent.h"
 #include "Renderer/Texture.h"
+#include "Core/Math/Rect.h"
 
 namespace kiko {
 
@@ -21,6 +22,10 @@ namespace kiko {
 
 		std::string textureName;
 		res_t<Texture> m_texture;
+		Rect source;
+		
+		bool flipH = false;
+		vec2 origin{ 0.5f, 0.5f };
 
 	};
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Audio/AudioSystem.h"
-#include "Core/Transform.h"
+#include "Core/Math/Transform.h"
 #include "Framework/Actor.h"
 
 namespace kiko {
@@ -14,11 +14,13 @@ namespace kiko {
 
 		bool Initialize() override;
 		void Update(float dt) override;
-		void OnCollision(Actor* actor);
+		void OnCollisionEnter(Actor* actor);
 
 	private:
 
+		float speed = 0;
 		float damage = 0;
+		PhysicsComponent* m_physicsCompnent = nullptr;
 
 	};
 

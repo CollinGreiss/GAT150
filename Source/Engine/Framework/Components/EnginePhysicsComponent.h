@@ -1,7 +1,7 @@
 #pragma once
 
 #include "PhysicsComponent.h"
-#include "Core/Vector2.h"
+#include "Core/Math/Vector2.h"
 
 namespace kiko {
 
@@ -11,8 +11,9 @@ namespace kiko {
 
 		CLASS_DECLARATION(EnginePhysicsComponent)
 
+		virtual void Update(float dt);
 		virtual void ApplyForce(const vec2& force) override;
-		virtual void Update(float dt) override;
+		virtual void ApplyTorque(float Torque) override {};
 
 	public:
 		

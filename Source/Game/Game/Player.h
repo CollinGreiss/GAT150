@@ -1,28 +1,29 @@
 #pragma once
 #include "Framework/Actor.h"
 
-class Player : public kiko::Actor {
+namespace kiko {
 
-public:
+	class Player : public kiko::Actor {
 
-	Player(float health, float speed, float turnRate, const kiko::Transform& transform, std::string tag) :
-		Actor{ transform, tag, health },
-		m_speed{ speed },
-		m_turnRate{ turnRate }
-	{}
+	public:
+		
+		CLASS_DECLARATION(Player)
 
+		bool Initialize() override;
 
-	bool Initialize() override;
+		void Update(float dt) override;
+		void OnCollisionEnter(Actor* other) override;
 
-	void Update(float dt) override;
-	void OnCollision(Actor* other) override;
+		friend class Player;
 
-private:
-	
-	float m_speed = 0;
-	float m_turnRate = 0;
+	private:
 
-	kiko::PhysicsComponent* m_physicsComponent = nullptr;
+		float speed = 0;
+		float turnRate = 0;
 
-};
+		kiko::PhysicsComponent* m_physicsComponent = nullptr;
+
+	};
+
+}
 

@@ -1,27 +1,26 @@
 #pragma once
+
 #include "Framework/Actor.h"
 
-class Enemy : public kiko::Actor {
+namespace kiko {
 
-public:
+	class Enemy : public kiko::Actor {
 
-	Enemy(float speed, const kiko::Transform& transform, float firerate, std::string tag) :
-		Actor{ transform, tag, -1.0f },
-		m_speed{ speed }
-	{
-		m_firerate = firerate;
-		m_firetimer = m_firerate;
-	}
+	public:
+		
+		CLASS_DECLARATION(Enemy)
 
-	void Update(float dt) override;
-	void OnCollision(Actor* other) override;
+		void Update(float dt) override;
+		void OnCollisionEnter(Actor* other) override;
 
-private:
+	private:
 
-	float m_speed = 0;
+		float speed = 0;
+		float turnRate = 0;
 
-	float m_firerate = 0;
-	float m_firetimer = 0;
+		float m_firerate = 0;
+		float m_firetimer = 0;
 
-};
+	};
 
+}

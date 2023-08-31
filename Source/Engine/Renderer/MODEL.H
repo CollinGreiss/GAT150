@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Core/Vector2.h"
-#include "Core/Transform.h"
-#include "Core/Color.h"
+#include "Core/Math/Vector2.h"
+#include "Core/Math/Transform.h"
+#include "Core/Math/Color.h"
 #include "Framework/Resource/Resource.h"
 #include <vector>
 

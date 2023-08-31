@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Component.h"
-#include "Core/Vector2.h"
+#include "Core/Math/Vector2.h"
 
 namespace kiko {
 
@@ -9,8 +9,10 @@ namespace kiko {
 
 	public:
 
-		virtual void Update(float dt) = 0;
 		virtual void ApplyForce(const vec2& force) = 0;
+		virtual void ApplyTorque(float Torque) = 0;
+
+		virtual void SetVelocity(const vec2& velocity) { this->velocity = velocity; }
 
 	public:
 

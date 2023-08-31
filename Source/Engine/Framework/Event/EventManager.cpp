@@ -24,7 +24,20 @@ namespace kiko {
 
 	void EventManager::Unsubscribe(Event::id_t id, IEventListener* listener) {
 
+		auto& dispatchers = m_dispatchers[id];
 
+		for (auto iter = dispatchers.begin(); iter != dispatchers.end(); iter++) {
+
+			if (iter->listener == listener) {
+
+				INFO_LOG("Event unsubscribed: " << id);
+
+				dispatchers.erase(iter);
+				break;
+
+			}
+
+		}
 
 	}
 

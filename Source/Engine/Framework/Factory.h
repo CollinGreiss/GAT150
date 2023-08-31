@@ -11,6 +11,7 @@
 #define CREATE_CLASS(classname) kiko::Factory::Instance().Create<kiko::classname>(#classname)
 #define CREATE_CLASS_BASE(classbase, classname) kiko::Factory::Instance().Create<classbase>(classname)
 #define INSTANTIATE(classbase, classname) kiko::Factory::Instance().Create<classbase>(classname)
+#define ACTOR_REGISTERED(actor) kiko::Factory::Instance().GetRegistedClass(actor)
 
 namespace kiko {
 
@@ -68,6 +69,8 @@ namespace kiko {
 		template <typename T>
 		std::unique_ptr<T> Create(const std::string& key);
 
+		bool GetRegistedClass(const std::string& key) { auto iter = m_registy.find(key); return (iter != m_registy.end());  }
+
 		friend class Singleton;
 
 	protected:
@@ -92,7 +95,6 @@ namespace kiko {
 	inline void Factory::RegisterPrototype(const std::string& key, std::unique_ptr<T> prototype) {
 
 		INFO_LOG("Prototype Class Registerd: " << key);
-
 		m_registy[key] = std::make_unique<PrototypeCreator<T>>(std::move(prototype));
 
 	}

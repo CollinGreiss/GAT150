@@ -1,8 +1,11 @@
 #pragma once
+
 #include "MathUtils.h"
 #include <cstdint>
 #include <istream>
 #include <string>
+
+#define COLOR_SPLIT(color) color.r, color.g, color.b, color.a
 
 namespace kiko {
 
@@ -16,6 +19,9 @@ namespace kiko {
 
 		Color() : r{ 0 }, g{ 0 }, b{ 0 }, a{ 0 } {}
 		Color(float r, float g, float b, float a = 0) : r{ r }, g{ g }, b{ b }, a{ a } {}
+
+		float operator [] (size_t index) const { return (&r)[index]; }
+		float& operator [] (size_t index) { return (&r)[index]; }
 
 		static uint8_t ToInt(float c) { return static_cast<uint8_t> (Clamp(c, 0.0f, 1.0f) * 255); }
 

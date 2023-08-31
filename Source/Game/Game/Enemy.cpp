@@ -9,33 +9,46 @@
 
 #include <memory>
 
-void Enemy::Update(float dt) {
+namespace kiko {
 
-    if (health <= 0.0f)
-        kiko::EventManager::Instance().DispatchEvent("OnAddPoints", 100);
+    CLASS_DEFINITION(Enemy);
 
-    Actor::Update(dt);
+    void Enemy::Update(float dt) {
 
-    kiko::vec2 forward = kiko::vec2{ -1, 0 };
-    transform.position += (forward * m_speed * dt);
+        if (health <= 0.0f)
+            kiko::EventManager::Instance().DispatchEvent("OnAddPoints", 100);
 
-    if (transform.position.x < -10.0f) {
+        Actor::Update(dt);
 
-        m_destroyed = true;
+        kiko::vec2 forward = kiko::vec2{ -1, 0 };
+        transform.position += (forward * speed * dt);
+
+        if (transform.position.x < -10.0f) {
+
+            m_destroyed = true;
+
+        }
+
+        transform.position.y = kiko::Clamp(transform.position.y, 0.0f, (float)(kiko::g_renderer.GetHeight() - 28));
+
+        m_firetimer -= dt;
+        if (m_firetimer <= 0) {
+
+            m_firetimer = m_firerate;
+
+        }
 
     }
 
-    transform.position.y = kiko::Clamp(transform.position.y, 0.0f, (float)(kiko::g_renderer.GetHeight() - 28));
+    void Enemy::OnCollisionEnter(Actor* other) {
+    }
 
-    m_firetimer -= dt;
-    if (m_firetimer <= 0) {
+    void Enemy::Read(const json_t& value) {
 
-        m_firetimer = m_firerate;
+        Actor::Read(value);
+        READ_DATA(value, speed);
+        READ_DATA(value, turnRate);
 
     }
 
-}
-
-void Enemy::OnCollision(Actor* other)
-{
 }

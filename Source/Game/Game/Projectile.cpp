@@ -16,6 +16,11 @@ namespace kiko {
         kiko::g_audioSystem.Play("laser");
         Actor::Initialize();
 
+        m_physicsCompnent = GetComponent<PhysicsComponent>();
+
+        vec2 forward = vec2{ 0, -1 }.Rotate(transform.rotation);
+        m_physicsCompnent->SetVelocity(forward * speed);
+
         auto collisoinComponent = GetComponent<CollisionComponent>();
         if (collisoinComponent) {
 
@@ -23,7 +28,7 @@ namespace kiko {
             if (renderComponent) {
 
                 float sacle = transform.scale;
-                collisoinComponent->m_radius = renderComponent->GetRadius();
+                collisoinComponent->radius = renderComponent->GetRadius();
 
 
             }
@@ -44,10 +49,11 @@ namespace kiko {
 
         Actor::Read(value);
         READ_DATA(value, damage);
+        READ_DATA(value, speed);
 
     }
 
-    void Projectile::OnCollision(Actor* other) {
+    void Projectile::OnCollisionEnter(Actor* other) {
 
         if (other->GetTag() != GetTag()) {
 
@@ -63,7 +69,7 @@ namespace kiko {
             data.speedMin = 50;
             data.speedMax = 250;
             data.damping = 0.5f;
-            data.color = kiko::Color{ 1, 0.1, 0, 1 };
+            data.color = kiko::Color{ 1.0f, 0.1f, 0.0f, 1.0f };
 
             kiko::Transform transform{ transform.position, 0, 1 };
             auto emitter = std::make_unique<kiko::Emitter>(transform, data);

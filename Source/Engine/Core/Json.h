@@ -1,13 +1,20 @@
 #pragma once
 
 #include "rapidjson/include/document.h"
-#include "Core/Vector2.h"
+#include "Core/Math/Vector2.h"
+#include "Core/Math/Rect.h"
+#include "Core/Math/Color.h"
+
 #include <string>
+#include <vector>
 
 #define READ_DATA(value, data) kiko::Json::Read(value, #data, data)
 #define READ_DATA_REQUIRED(value, data) kiko::Json::Read(value, #data, data, true)
+#define WRITE_DATA(document, value, data, filename) kiko::Json::Write(document, value, #data, data, filename)
 #define HAS_DATA(value, data) value.HasMember(#data)
 #define GET_DATA(value, data) value[#data]
+#define READ_NAME_DATA(value, name, data) kiko::Json::Read(value, name, data)
+#define READ_NAME_DATA_REQUIRED(value, name, data) kiko::Json::Read(value, name, data, true)
 
 namespace kiko {
 
@@ -16,11 +23,18 @@ namespace kiko {
 	public:
 
 		static bool Load(const std::string& filename, rapidjson::Document& document);
+
 		static bool Read(const rapidjson::Value& value, const std::string& name, int& data, bool required = false);
 		static bool Read(const rapidjson::Value& value, const std::string& name, float& data, bool required = false);
 		static bool Read(const rapidjson::Value& value, const std::string& name, bool& data, bool required = false);
 		static bool Read(const rapidjson::Value& value, const std::string& name, std::string& data, bool required = false);
 		static bool Read(const rapidjson::Value& value, const std::string& name, vec2& data, bool required = false);
+		static bool Read(const rapidjson::Value& value, const std::string& name, Color& data, bool required = false);
+		static bool Read(const rapidjson::Value& value, const std::string& name, Rect& data, bool required = false);
+		static bool Read(const rapidjson::Value& value, const std::string& name, std::vector<std::string>& data, bool required = false);
+		static bool Read(const rapidjson::Value& value, const std::string& name, std::vector<int>& data, bool required = false);
+
+		static bool Write(rapidjson::Value& document, rapidjson::Value& value, const std::string& name, std::vector<int>& data, const std::string& filename);
 
 	};
 

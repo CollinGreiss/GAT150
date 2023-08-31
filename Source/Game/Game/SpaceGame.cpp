@@ -4,6 +4,8 @@
 #include "Enemy.h"
 
 #include "Core/Random.h"
+#include "Core/Math/Color.h"
+#include "Core/Math/Transform.h"
 
 #include "Framework/Framework.h"
 #include "Renderer/Renderer.h"
@@ -47,10 +49,11 @@ void SpaceGame::Update(float dt) {
 
 	case SpaceGame::Title:
 
-		m_scene->GetActor("GameOverText")->disabled = true;
-		m_scene->GetActor("Background")->disabled = true;
+		
+		if (auto text = m_scene->GetActor("GameOverText")) text->disabled = true;
+		if (auto text = m_scene->GetActor("Background")) text->disabled = true;
 
-		m_scene->GetActor("Title")->disabled = false;
+		if (auto text = m_scene->GetActor("Title")) text->disabled = false;
 		if (g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE))
 			m_state = eState::StateGame;
 
@@ -58,7 +61,7 @@ void SpaceGame::Update(float dt) {
 
 	case SpaceGame::StateGame:
 
-		m_scene->GetActor("Title")->disabled = true;
+		if (auto text = m_scene->GetActor("Title")) text->disabled = true;
 		m_score = 0;
 		m_state = eState::StartLevel;
 
@@ -67,31 +70,10 @@ void SpaceGame::Update(float dt) {
 	case SpaceGame::StartLevel:
 	{
 
-		if (auto background = m_scene->GetActor("Background"))
-			background->disabled = false;
+		if (auto text = m_scene->GetActor("Background")) text->disabled = false;
 
-		std::unique_ptr<Player> player = std::make_unique<Player>(
-			100.0f, //health
-			10.0f, //speed
-			DegToRad(270.0f), //turn rate
-			Transform{ {500, 300}, 0, 1 },
-			"Player" //tag
-			);
-
-		auto component = CREATE_CLASS(SpriteComponent);
-		component->m_texture = GET_RESOURCE(Texture, "images/Ship/base/normal.png", g_renderer);
-		player->AddComponent(std::move(component));
-
-		auto physicsComponent = CREATE_CLASS(EnginePhysicsComponent);
-		physicsComponent->damping = 0.9f;
-		player->AddComponent(std::move(physicsComponent));
-
-		auto collisionComponent = CREATE_CLASS(CircleCollisionComponent);
-		collisionComponent->m_radius = 10;
-		player->AddComponent(std::move(collisionComponent));
-
+		auto player = INSTANTIATE(Player, "Player");
 		player->Initialize();
-
 		m_scene->Add(std::move(player));
 
 		m_state = eState::Game;
@@ -109,7 +91,9 @@ void SpaceGame::Update(float dt) {
 
 			m_spawnTimer = randomf(0, m_spawnTime / 2);
 
-			//Spawn some bullshit
+			auto enemy = INSTANTIATE(Enemy, "Enemy");
+			enemy->Initialize();
+			m_scene->Add(std::move(enemy));
 
 		}
 
@@ -124,7 +108,7 @@ void SpaceGame::Update(float dt) {
 
 	case SpaceGame::GameOver:
 
-		m_scene->GetActor("GameOverText")->disabled = false;
+		if (auto text = m_scene->GetActor("GameOverText")) text->disabled = false;
 		if (g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE))
 			m_state = eState::Title;
 
@@ -138,14 +122,12 @@ void SpaceGame::Update(float dt) {
 	m_scoreText->Create(g_renderer, "Score     " + std::to_string(m_score), { 1, 1, 1, 1 });
 
 	m_scene->Update(dt);
-	g_particleSystem.Update(dt);
 
 }
 
 void SpaceGame::Draw(kiko::Renderer& renderer) {
 
 	m_scene->Draw(renderer);
-	g_particleSystem.Draw(renderer);
 
 
 	m_scoreText->Draw(g_renderer, 10, 10);
