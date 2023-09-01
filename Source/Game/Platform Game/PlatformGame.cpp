@@ -150,8 +150,15 @@ void PlatformGame::OnLevelSwitch(const kiko::Event& event) {
 }
 
 void PlatformGame::OnDebugMode(const kiko::Event& event) {
-
+	
 	debug = std::get<bool>(event.data);
+
+	if (!debug) return;
+
+	m_backgroundColor.r = 66;
+	m_backgroundColor.g = 135;
+	m_backgroundColor.b = 245;
+	m_backgroundColor.a = 255;
 
 }
 

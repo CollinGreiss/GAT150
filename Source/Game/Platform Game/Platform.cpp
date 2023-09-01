@@ -51,7 +51,6 @@ namespace kiko {
 	void Platform::SwitchDimension(const kiko::Event& event) {
 
 		int swap = std::get<int>(event.data);
-		currentDimension = swap;
 
 		if (debug)
 			return;
@@ -79,8 +78,8 @@ namespace kiko {
 		} else {
 
 			m_SpriteComponent->m_texture = GET_RESOURCE(Texture, "images/box.png", g_renderer);
-			m_SpriteComponent->disabled = (id != currentDimension);
-			m_physicsComponent->disabled = (id != currentDimension);
+			m_SpriteComponent->disabled = (id != 1);
+			m_physicsComponent->disabled = (id != 1);
 
 		}
 
